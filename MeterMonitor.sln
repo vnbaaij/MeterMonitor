@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29606.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterMonitor", "MeterMonitor\MeterMonitor.csproj", "{A734CBE9-2C96-4571-8DEF-97219455B598}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA} = {F95DFEDC-A674-4D2B-B287-E13F5611A2DA}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSMRParser", "DSMRParser\DSMRParser.csproj", "{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{348077F5-8BCF-43B6-8593-2466ED3BBB5F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A734CBE9-2C96-4571-8DEF-97219455B598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A734CBE9-2C96-4571-8DEF-97219455B598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A734CBE9-2C96-4571-8DEF-97219455B598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A734CBE9-2C96-4571-8DEF-97219455B598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3ECAE457-9164-4D0B-A024-1C1E8A387F4F}
+	EndGlobalSection
+EndGlobal

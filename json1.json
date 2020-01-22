@@ -1,0 +1,67 @@
+{
+  "MessageHeader": "XMX5LGBBFFB231226417",
+  "MessageVersion": 1,
+  "SerialNumberElectricityMeter": "4530303035303031363935303633303135",
+  "SerialNumberGasMeter": null,
+  "Timestamp": "2019-12-20T00:07:14",
+  "PowerConsumptionTariff1": 7136.133,
+  "PowerConsumptionTariff2": 5216.189,
+  "PowerProductionTariff1": 849.473,
+  "PowerProductionTariff2": 2127.347,
+  "CurrentTariff": 1,
+  "ActualPowerDelivered1": 0.301,
+  "ActualPowerDelivered2": 0.000,
+  "InstantaneousElectricityUsageL1": 0.162,
+  "InstantaneousElectricityUsageL2": 0.121,
+  "InstantaneousElectricityUsageL3": 0.017,
+  "InstantaneousElectricityDeliveryL1": 0.000,
+  "InstantaneousElectricityDeliveryL2": 0.000,
+  "InstantaneousElectricityDeliveryL3": 0.000,
+  "VoltageSagsL1": 1,
+  "VoltageSagsL2": 2,
+  "VoltageSagsL3": 2,
+  "VoltageSwellsL1": 0,
+  "VoltageSwellsL2": 0,
+  "VoltageSwellsL3": 0,
+  "MessageCode": "",
+  "MessageText": "",
+  "InstantaneousCurrentL1": 1,
+  "InstantaneousCurrentL2": 1,
+  "InstantaneousCurrentL3": 0,
+  "PowerFailures": 14,
+  "LongPowerFailures": 7,
+  "NumberOfLogEntries": 7,
+  "PowerFailureEvents": [
+    {
+      "Timestamp": "2018-10-04T12:13:00",
+      "Duration": 4487
+    },
+    {
+      "Timestamp": "2018-06-08T10:58:08",
+      "Duration": 1183
+    },
+    {
+      "Timestamp": "2017-01-27T20:38:20",
+      "Duration": 3656
+    },
+    {
+      "Timestamp": "2016-06-04T00:36:43",
+      "Duration": 656
+    },
+    {
+      "Timestamp": "2016-05-10T12:31:23",
+      "Duration": 943
+    },
+    {
+      "Timestamp": "2015-11-26T09:56:59",
+      "Duration": 2444
+    },
+    {
+      "Timestamp": "2015-02-11T09:15:55",
+      "Duration": 1380715
+    }
+  ],
+  "GasUsage": 0,
+  "GasTimestamp": "0001-01-01T00:00:00",
+  "CRC": "7096"
+}
