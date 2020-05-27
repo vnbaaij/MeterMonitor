@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "RaspberryPublish",
-            "program": "/home/pi/dotnet/dotnet",
+            "program": "/home/pi/.dotnet/dotnet",
             "args": ["/home/pi/Desktop/${workspaceFolderBasename}/${workspaceFolderBasename}.dll"],
             "cwd": "/home/pi/Desktop/${workspaceFolderBasename}",
             "stopAtEntry": false,
@@ -18,7 +18,7 @@
                 "pipeArgs": [
                     "pi@raspberrypi"
                 ],
-                "debuggerPath": "~/vsdbg/vsdbg"
+                "debuggerPath": "~/.vsdbg/vsdbg"
             }
         }
     ]

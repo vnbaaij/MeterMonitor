@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Text.Json;
-using Azure.Cosmos;
+using Azure.Cosmos.Serialization;
 
 namespace MeterMonitor
 {

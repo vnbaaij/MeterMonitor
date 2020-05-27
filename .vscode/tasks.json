@@ -13,8 +13,12 @@
                 "&&",
                 "bash",
                 "-c",
-                "sshpass -p r@spb3rryvnb# rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Debug/netcoreapp3.1/linux-arm/publish/ pi@raspberrypi:/home/pi/Desktop/${workspaceFolderBasename}"
-            ]
+                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Debug/netcoreapp3.1/linux-arm/publish/ pi@raspberrypi:/home/pi/Desktop/${workspaceFolderBasename}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

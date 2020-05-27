@@ -1,6 +1,5 @@
 using System;
 using System.IO.Ports;
-using Microsoft.Extensions.Configuration;
 
 namespace MeterMonitor.Configuration
 {

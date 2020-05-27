@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Reflection;
 using DSMRParser;
 using DSMRParser.Models;
 using MeterMonitor.Configuration;
@@ -14,10 +9,7 @@ using MeterMonitor.Reader;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ObjectsComparer;
-using System.Text.Json;
 using Azure.Cosmos;
-using System.Net;
 
 namespace MeterMonitor
 {
@@ -27,7 +19,7 @@ namespace MeterMonitor
         private readonly IMeterReader _meterReader;
         public readonly ConfigSettings _config;
         private CosmosClient _cosmosClient;
-        private Container _cosmosContainer;
+        private CosmosContainer _cosmosContainer;
 
         private Telegram _previous;
         private Telegram _telegram;
