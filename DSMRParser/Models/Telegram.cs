@@ -50,7 +50,6 @@ namespace DSMRParser.Models
     {
         private const string LineEnding = "\r\n";
 
-        //public string Key { get; set; }
         public string MessageHeader { get; set; }
 
         [Obis("1-3:0.2.8")]
@@ -180,7 +179,6 @@ namespace DSMRParser.Models
                 return;
             Console.WriteLine("==>");
             Console.WriteLine("Telegram data:");
-            //Console.WriteLine($"Timestamp: {RowKey}");
 
             var classType = typeof(Telegram);
             foreach (var item in classType.GetProperties())
