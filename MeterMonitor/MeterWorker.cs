@@ -45,7 +45,7 @@ namespace MeterMonitor
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                SetSourceToFile(files, ref counter);
+                SetSourceToFiles(files, ref counter);
 
                 _telegram = await _meterReader.ReadAsStreamAsync();
 
@@ -57,14 +57,14 @@ namespace MeterMonitor
                     _logger.LogError("Telegram not extracted correctly. Calculated CRC not equal to stored CRC ");
                 }
 
-                SaveDataFile();
-                SaveDataJson();
+                SaveDataToFile();
+                SaveDataToStorageTable();
 
                 await Task.Delay(_config.ReadInterval, stoppingToken);
             }
         }
 
-        private void SaveDataFile()
+        private void SaveDataToFile()
         {
             if (_config.SaveDataFiles)
             {
@@ -77,7 +77,7 @@ namespace MeterMonitor
             }
         }
 
-        private async void SaveDataJson()
+        private async void SaveDataToStorageTable()
         {
 
             //_telegram.Dump();
@@ -106,7 +106,7 @@ namespace MeterMonitor
             }
         }
 
-        private void SetSourceToFile(FileInfo[] files, ref int counter)
+        private void SetSourceToFiles(FileInfo[] files, ref int counter)
         {
             if (_meterReader is FileReader)
             {
