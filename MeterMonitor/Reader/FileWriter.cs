@@ -4,9 +4,9 @@ namespace MeterMonitor.Reader
 {
     public class FileWriter : IWriteFile
     {
-        private string _contents;
-        private string _path;
-        private string _filename;
+        private string _contents = string.Empty;
+        private string _path = string.Empty;
+        private string _filename = string.Empty;
 
         public IWriteFile WithContents(string contents)
         {

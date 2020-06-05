@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "RaspberryPublish",
-            "program": "/home/pi/.dotnet/dotnet",
+            "program": "~/.dotnet/dotnet",
             "args": ["/home/pi/Desktop/${workspaceFolderBasename}/${workspaceFolderBasename}.dll"],
             "cwd": "/home/pi/Desktop/${workspaceFolderBasename}",
             "stopAtEntry": false,

@@ -40,5 +40,22 @@ namespace DSMRParser
             else
                 return string.Empty;
         }
+
+        public static int GetMonth(this Telegram telegram, string prefix)
+        {
+            return int.Parse(telegram.RowKey.Substring(4, 2));
+        }
+
+        public static int GetYear(this Telegram telegram, string prefix)
+        {
+            return int.Parse(telegram.RowKey.Substring(0, 4));
+        }
+
+        public static string GetTablename(this Telegram telegram, string prefix)
+        {
+            return prefix + telegram.RowKey.Substring(0, 6);
+        }
+
+
     }
 }

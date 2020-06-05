@@ -65,9 +65,9 @@ namespace DSMRParser
 
         public async Task ParseFromTextReader(TextReader reader, TelegramParsedEventHandler onParsedEvent)
         {
-            Telegram? telegram = null;
+            Telegram telegram = null;
 
-            string? line;
+            string line;
             while ((line = await reader.ReadLineAsync()) != null)
             {
                 if (telegram == null)
@@ -82,7 +82,8 @@ namespace DSMRParser
                 {
                     if (line.StartsWith(telegramEnd.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        SetTelegramCosmosProperties(ref telegram);
+                        //SetTelegramCosmosProperties(ref telegram);
+                        SetTelegramTableProperties(ref telegram);
                         SetTelegramCRC(ref telegram, line);
                         onParsedEvent?.Invoke(this, telegram);
                         return;
@@ -132,9 +133,7 @@ namespace DSMRParser
             }
 
             var propName = GetPropertiesWithKey(obisErrorLog).ElementAtOrDefault(0);
-#pragma warning disable CS8604 // Possible null reference argument.
             PropertyInfo propertyInfo = GetTelegramProperty(propName);
-#pragma warning restore CS8604 // Possible null reference argument.
             propertyInfo.SetValue(telegram, powerFailureEvents);
         }
 
@@ -164,20 +163,16 @@ namespace DSMRParser
             }
         }
 
-        private static IEnumerable<string?> GetPropertiesWithKey(string key)
+        private static IEnumerable<string> GetPropertiesWithKey(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 yield return null;
             }
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             foreach (PropertyInfo property in GetTelegramProperties())
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var attr = property.GetCustomAttributes(typeof(ObisAttribute), false).Cast<ObisAttribute>().FirstOrDefault();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 if (attr != null && attr.ObisIdentifier == key)
                 {
                     yield return property.Name;
@@ -185,10 +180,16 @@ namespace DSMRParser
             }
         }
 
-        private static void SetTelegramCosmosProperties(ref Telegram telegram)
+        //private static void SetTelegramCosmosProperties(ref Telegram telegram)
+        //{
+        //    telegram.Id = telegram.Timestamp.ToString("yyyyMMddHHmmss");
+        //    telegram.Key = telegram.Timestamp.ToString("yyyyMMdd");
+        //}
+
+        private static void SetTelegramTableProperties(ref Telegram telegram)
         {
-            telegram.Id = telegram.Timestamp.ToString("yyyyMMddHHmmss");
-            telegram.Key = telegram.Timestamp.ToString("yyyyMMdd");
+            telegram.RowKey = telegram.MeterTimestamp.ToString("yyyyMMddHHmmss");
+            telegram.PartitionKey = telegram.MeterTimestamp.ToString("dd");
         }
 
         private static void SetTelegramHeader(ref Telegram telegram, string value)
@@ -217,17 +218,11 @@ namespace DSMRParser
 
         private static void SetTelegramProperties(ref Telegram telegram, IEnumerable<string> properties, IEnumerable<string> values)
         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            IEnumerable<PropertyInfo?> telegramProperties = GetTelegramProperties().Where(p => properties.Contains(p.Name));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            IEnumerable<PropertyInfo> telegramProperties = GetTelegramProperties().Where(p => properties.Contains(p.Name));
             foreach (PropertyInfo propertyInfo in telegramProperties)
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             {
                 var obisAttribute =
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     propertyInfo.GetCustomAttributes(typeof(ObisAttribute), false)
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                         .Cast<ObisAttribute>()
                         .FirstOrDefault();
 
@@ -246,15 +241,15 @@ namespace DSMRParser
             }
         }
 
-        private static void SetPropertyValue(ref Telegram telegram, PropertyInfo propertyInfo, string value, string? obisValueUnit = null)
+        private static void SetPropertyValue(ref Telegram telegram, PropertyInfo propertyInfo, string value, string obisValueUnit = null)
         {
             var convertedValue = GetConvertedPropertyValue(propertyInfo, value, obisValueUnit);
             propertyInfo.SetValue(telegram, convertedValue);
         }
 
-        private static object GetConvertedPropertyValue(PropertyInfo propertyInfo, string value, string? obisValueUnit = null)
+        private static object GetConvertedPropertyValue(PropertyInfo propertyInfo, string value, string obisValueUnit = null)
         {
-            TypeConverter? converter = TypeDescriptor.GetConverter(propertyInfo.PropertyType);
+            TypeConverter converter = TypeDescriptor.GetConverter(propertyInfo.PropertyType);
             var converterAttribute =
                 propertyInfo.GetCustomAttributes(typeof(TypeConverterAttribute), false)
                     .Cast<TypeConverterAttribute>()
@@ -263,9 +258,7 @@ namespace DSMRParser
             if (converterAttribute != null)
             {
                 var converterType = Type.GetType(converterAttribute.ConverterTypeName);
-#pragma warning disable CS8604 // Possible null reference argument.
                 converter = Activator.CreateInstance(converterType) as TypeConverter;
-#pragma warning restore CS8604 // Possible null reference argument.
             }
 
             if (!string.IsNullOrEmpty(obisValueUnit))
@@ -273,12 +266,10 @@ namespace DSMRParser
                 value = value.Replace("*" + obisValueUnit, string.Empty);
             }
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return converter.ConvertFromInvariantString(value);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
-        private static IEnumerable<PropertyInfo?> GetTelegramProperties()
+        private static IEnumerable<PropertyInfo> GetTelegramProperties()
         {
             return typeof(Telegram).GetTypeInfo().DeclaredProperties;
         }

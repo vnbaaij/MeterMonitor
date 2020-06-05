@@ -8,9 +8,9 @@ namespace DSMRParser.Models
     {
         public string ObisIdentifier { get; set; }
         public int ValueIndex { get; set; }
-        public string? ValueUnit { get; set; }
+        public string ValueUnit { get; set; }
 
-        public ObisAttribute(string obisIdentifier, int valueIndex = 0, string? valueUnit = null)
+        public ObisAttribute(string obisIdentifier, int valueIndex = 0, string valueUnit = null)
         {
             if (string.IsNullOrWhiteSpace(obisIdentifier))
             {

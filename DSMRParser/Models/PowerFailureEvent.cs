@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
 using DSMRParser.Converters;
 
 namespace DSMRParser.Models
 {
     public class PowerFailureEvent
     {
+        [JsonPropertyName("timestamp")]
         [TypeConverter(typeof(ObisTimestampConverter))]
         public DateTime Timestamp { get; set; }
+        [JsonPropertyName("duration")]
         [TypeConverter(typeof(ObisDurationConverter))]
         public int Duration { get; set; } = 0;
     }

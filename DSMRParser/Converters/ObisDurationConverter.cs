@@ -9,7 +9,7 @@ namespace DSMRParser.Converters
         //Duration in format: 000000xxxx*s
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            string? stringValue = value as string;
+            string stringValue = value as string;
             if (!string.IsNullOrWhiteSpace(stringValue))
             {
                 stringValue = stringValue[0..^2]; //remove '*s'

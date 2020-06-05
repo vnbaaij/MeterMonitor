@@ -1,5 +1,5 @@
 ﻿using DSMRParser.Converters;
-using Microsoft.Azure.Cosmos.Table;
+using DSMRParser.Models;
 using MonitorUtils;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,10 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSMRParser.Models
+namespace CosmosConverter
 {
+    public class TelegramV1
+    {
 
     // /XMX5LGBBFFB231226417
     // 1-3:0.2.8(42)				//DSMR Version 4.2
@@ -44,118 +46,157 @@ namespace DSMRParser.Models
     // 1-0:62.7.0(00.000*kW)			//Instantaneous active power L3 (-P) in W resolution
     // !F498
 
-
-
-    public class Telegram : TableEntity
-    {
         private const string LineEnding = "\r\n";
 
-        //public string Key { get; set; }
+        [JsonPropertyName("id")]
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        public string Id { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+
+        [JsonPropertyName("key")]
+        public string Key { get; set; }
+
+        [JsonPropertyName("messageHeader")]
         public string MessageHeader { get; set; }
 
+        [JsonPropertyName("messageVersion")]
         [Obis("1-3:0.2.8")]
         public ObisVersion MessageVersion { get; set; }
 
+        [JsonPropertyName("serialNumberElectricityMeter")]
         [Obis("0-0:96.1.1")]
         public string SerialNumberElectricityMeter { get; set; }
 
+        [JsonPropertyName("serialNumberGasMeter")]
         [Obis("0-1:96.1.0")]
-        public string SerialNumberGasMeter { get; set; } = null;
+        public string SerialNumberGasMeter { get; set; } 
 
+        [JsonPropertyName("timestamp")]
         [Obis("0-0:1.0.0"), TypeConverter(typeof(ObisTimestampConverter))]
-        public DateTime MeterTimestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
         //Power consumption per tarriff
+        [JsonPropertyName("powerConsumptionTariff1")]
         [Obis("1-0:1.8.1", ValueUnit = "kWh")]
         public double PowerConsumptionTariff1 { get; set; }
+        [JsonPropertyName("powerConsumptionTariff2")]
         [Obis("1-0:1.8.2", ValueUnit = "kWh")]
         public double PowerConsumptionTariff2 { get; set; }
 
         //Power production per tarriff
+        [JsonPropertyName("powerProductionTariff1")]
         [Obis("1-0:2.8.1", ValueUnit = "kWh")]
         public double PowerProductionTariff1 { get; set; }
+        [JsonPropertyName("powerProductionTariff2")]
         [Obis("1-0:2.8.2", ValueUnit = "kWh")]
         public double PowerProductionTariff2 { get; set; }
 
         //Tariff code 1 is used for low tariff and tariff code 2 is used for normal tariff.
+        [JsonPropertyName("currentTariff")]
         [Obis("0-0:96.14.0")]
         public PowerTariff CurrentTariff { get; set; }
 
         //Actual electricity power delivered (+P) in 1 Watt resolution
+        [JsonPropertyName("actualPowerDelivered1")]
         [Obis("1-0:1.7.0", ValueUnit = "kW")]
         public double ActualPowerDelivered1 { get; set; }
 
+        [JsonPropertyName("actualPowerDelivered2")]
         [Obis("1-0:2.7.0", ValueUnit = "kW")]
         public double ActualPowerDelivered2 { get; set; }
 
         //Instantaneous active power (+P) in W resolution per phase
+        [JsonPropertyName("instantaneousElectricityUsageL1")]
         [Obis("1-0:21.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityUsageL1 { get; set; }
+        [JsonPropertyName("instantaneousElectricityUsageL2")]
         [Obis("1-0:41.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityUsageL2 { get; set; }
+        [JsonPropertyName("instantaneousElectricityUsageL3")]
         [Obis("1-0:61.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityUsageL3 { get; set; }
 
         //Instantaneous active power (-P) in W resolution per phase
+        [JsonPropertyName("instantaneousElectricityDeliveryL1")]
         [Obis("1-0:22.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityDeliveryL1 { get; set; }
+        [JsonPropertyName("instantaneousElectricityDeliveryL2")]
         [Obis("1-0:42.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityDeliveryL2 { get; set; }
+        [JsonPropertyName("instantaneousElectricityDeliveryL3")]
         [Obis("1-0:62.7.0", ValueUnit = "kW")]
         public double InstantaneousElectricityDeliveryL3 { get; set; }
 
 
         //Number of voltage sags in phase
+        [JsonPropertyName("voltageSagsL1")]
         [Obis("1-0:32.32.0")]
         public int VoltageSagsL1 { get; set; }
+        [JsonPropertyName("voltageSagsL2")]
         [Obis("1-0:52.32.0")]
         public int VoltageSagsL2 { get; set; }
+        [JsonPropertyName("voltageSagsL3")]
         [Obis("1-0:72.32.0")]
         public int VoltageSagsL3 { get; set; }
 
         //Number of voltage swells in phase
+        [JsonPropertyName("voltageSwellsL1")]
         [Obis("1-0:32.36.0")]
         public int VoltageSwellsL1 { get; set; }
+        [JsonPropertyName("voltageSwellsL2")]
         [Obis("1-0:52.36.0")]
         public int VoltageSwellsL2 { get; set; }
+        [JsonPropertyName("voltageSwellsL3")]
         [Obis("1-0:72.36.0")]
         public int VoltageSwellsL3 { get; set; }
 
 
         //Message code and text
+        [JsonPropertyName("messageCode")]
         [Obis("0-0:96.13.1")]
         public string MessageCode { get; set; }
+        [JsonPropertyName("messageText")]
         [Obis("0-0:96.13.0")]
         public string MessageText { get; set; }
 
         //Instantaneous current in A resolution per phase
+        [JsonPropertyName("instantaneousCurrentL1")]
         [Obis("1-0:31.7.0", ValueUnit = "A")]
         public double InstantaneousCurrentL1 { get; set; }
+        [JsonPropertyName("instantaneousCurrentL2")]
         [Obis("1-0:51.7.0", ValueUnit = "A")]
         public double InstantaneousCurrentL2 { get; set; }
+        [JsonPropertyName("instantaneousCurrentL3")]
         [Obis("1-0:71.7.0", ValueUnit = "A")]
         public double InstantaneousCurrentL3 { get; set; }
 
         //Number of power failures in any phase
+        [JsonPropertyName("powerFailures")]
         [Obis("0-0:96.7.21")]
         public int PowerFailures { get; set; }
 
         //Number of long power failures in any phase
+        [JsonPropertyName("longPowerFailures")]
         [Obis("0-0:96.7.9")]
         public int LongPowerFailures { get; set; }
 
         //Power Failure Event Log (long power failures)
+        [JsonPropertyName("numberOfLogEntries")]
         [Obis("1-0:99.97.0")]
         public int NumberOfLogEntries { get; set; }
 
+        [JsonPropertyName("powerFailureEvents")]
         [Obis("0-0:96.7.19")]
         public IList<PowerFailureEvent> PowerFailureEvents { get; set; }
 
+        [JsonPropertyName("gasUsage")]
         [Obis("0-1:24.2.1", 1, "m3")]
-        public double? GasUsage { get; set; } = null;
+        public double GasUsage { get; set; } 
+        [JsonPropertyName("gasTimestamp")]
         [Obis("0-1:24.2.1", 0), TypeConverter(typeof(ObisTimestampConverter))]
-        public DateTime? GasTimestamp { get; set; } = null;
-        public string CRC { get; set; }
+        public DateTime GasTimestamp { get; set; }
+        [JsonPropertyName("crc")]
+        public string CRC { get; set; } = string.Empty;
 
         [JsonIgnore]
         public IList<string> Lines { get; set; } = new List<string>();
@@ -172,21 +213,6 @@ namespace DSMRParser.Models
             byte[] bytes = Encoding.ASCII.GetBytes(ToString()[0..^6]);
             var checksum = crc.ComputeChecksumBytes(bytes);
             return BitConverter.ToString(checksum, 1, 1) + BitConverter.ToString(checksum, 0, 1);
-        }
-
-        public void Dump()
-        {
-            if (this == null)
-                return;
-            Console.WriteLine("==>");
-            Console.WriteLine("Telegram data:");
-            //Console.WriteLine($"Timestamp: {RowKey}");
-
-            var classType = typeof(Telegram);
-            foreach (var item in classType.GetProperties())
-            {
-                Console.WriteLine($"{item.Name} : {classType.GetProperty(item.Name).GetValue(this)}");
-            }
         }
     }
 
@@ -205,3 +231,4 @@ namespace DSMRParser.Models
         V50
     }
 }
+

@@ -16,8 +16,6 @@ namespace MeterMonitor
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddOptions();
-
                     services.Configure<ConfigSettings>(hostContext.Configuration.GetSection("Configuration"));
                     services.AddTransient<IMeterReader, MeterReader>();
                     services.AddHostedService<MeterWorker>();

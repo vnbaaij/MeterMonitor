@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosConverter", "CosmosConverter\CosmosConverter.csproj", "{680A4B4A-8E3A-4B80-BD0B-DC60BB34C046}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F95DFEDC-A674-4D2B-B287-E13F5611A2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{680A4B4A-8E3A-4B80-BD0B-DC60BB34C046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680A4B4A-8E3A-4B80-BD0B-DC60BB34C046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680A4B4A-8E3A-4B80-BD0B-DC60BB34C046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680A4B4A-8E3A-4B80-BD0B-DC60BB34C046}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

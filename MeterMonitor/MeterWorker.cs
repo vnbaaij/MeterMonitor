@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Azure.Cosmos;
+using System.Net;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace MeterMonitor
 {
@@ -18,40 +20,31 @@ namespace MeterMonitor
         private readonly ILogger<MeterWorker> _logger;
         private readonly IMeterReader _meterReader;
         public readonly ConfigSettings _config;
-        private CosmosClient _cosmosClient;
-        private CosmosContainer _cosmosContainer;
+        private readonly StorageTableHelper _storageTableHelper;
+        private CloudTable _table;
+
+        //private CosmosClient _cosmosClient;
+        //private CosmosContainer _cosmosContainer;
 
         private Telegram _previous;
         private Telegram _telegram;
         private Telegram _delta;
+
 
         public MeterWorker(ILogger<MeterWorker> logger, IMeterReader meterReader, IOptions<ConfigSettings> config)
         {
             _logger = logger;
             _meterReader = meterReader;
             _config = config.Value;
+
+            // Retrieve storage account information from connection string.
+            _storageTableHelper = new StorageTableHelper(_config.StorageConnectionstring);
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"MeterMontor started at: {DateTimeOffset.Now}");
 
-            var endpointUrl = _config.CosmosDBSettings.EndpointUrl;
-            var authorizationKey = _config.CosmosDBSettings.AuthorizationKey;
-            var database = _config.CosmosDBSettings.Database;
-            var container = _config.CosmosDBSettings.Container;
-
-            //Init CosmosDB here
-
-            var options = new CosmosClientOptions()
-            {
-                Serializer = new CosmosJsonSerializer(),
-            };
-            _cosmosClient = new CosmosClient(endpointUrl, authorizationKey,options);
-            _ = await _cosmosClient.CreateDatabaseIfNotExistsAsync(database);
-            _ = await _cosmosClient.GetDatabase(database).CreateContainerIfNotExistsAsync(container, "/key");
-
-            _cosmosContainer = _cosmosClient.GetContainer(_config.CosmosDBSettings.Database, _config.CosmosDBSettings.Container);
 
             await base.StartAsync(cancellationToken);
         }
@@ -72,7 +65,7 @@ namespace MeterMonitor
 
                 _telegram = await _meterReader.ReadAsStreamAsync();
 
-                _logger.LogInformation($"Extracted data from {_meterReader.Source}\n{_telegram.Timestamp}\nConsumption (low/high):\t{_telegram.PowerConsumptionTariff1}/{_telegram.PowerConsumptionTariff2}\nProduction (low/high):\t{_telegram.PowerProductionTariff1}/{_telegram.PowerProductionTariff2}\n");
+                _logger.LogInformation($"Extracted data from {_meterReader.Source}\n{_telegram.MeterTimestamp}\nConsumption (low/high):\t{_telegram.PowerConsumptionTariff1}/{_telegram.PowerConsumptionTariff2}\nProduction (low/high):\t{_telegram.PowerProductionTariff1}/{_telegram.PowerProductionTariff2}\n");
                 _logger.LogInformation($"Calculated CRC: {_telegram.ComputeChecksum()}");
 
                 if (_telegram.ComputeChecksum() != _telegram.CRC)
@@ -80,15 +73,15 @@ namespace MeterMonitor
                     _logger.LogError("Telegram not extracted correctly. Calculated CRC not equal to stored CRC ");
                 }
 
-                GetDifferences();
+                //GetDifferences();
                 SaveDataFile();
 
-                if (counter % 60 == 0)
+                //if (counter % 60 == 0)
                     SaveDataJson(_telegram);
-                else
-                    SaveDataJson(_delta);
+                //else
+                //    SaveDataJson(_delta);
 
-                counter++;
+                //counter++;
 
                 await Task.Delay(_config.ReadInterval, stoppingToken);
             }
@@ -109,7 +102,8 @@ namespace MeterMonitor
                 //_logger.LogInformation($"There were { differences.Count() } variances on these properties: { props }");
 
                 _delta = _telegram.GetDelta(_previous);
-                _delta.Key = _delta.Id.Substring(0, 8);
+                //_delta.Key = _delta.Id.Substring(0, 8);
+                _delta.PartitionKey = _telegram.PartitionKey;
             }
 
 
@@ -123,38 +117,45 @@ namespace MeterMonitor
                 IWriteFile fileWriter = new FileWriter();
 
                 fileWriter.WithPath(_config.DataFilesPath)
-                    .WithFilename(_telegram.Id + ".dsmrdata")
+                    //.WithFilename(_telegram.Id + ".dsmrdata")
+                    .WithFilename(_telegram.RowKey + ".dsmrdata")
                     .WithContents(_telegram.ToString())
                     .Write();
             }
         }
 
-        private async void SaveDataJson(Telegram data)
+        private async void SaveDataJson(Telegram telegram)
         {
+            if (telegram == null)
+            {
+                throw new ArgumentNullException("telegram");
+            }
 
-            //var options = new JsonSerializerOptions
-            //{
-            //    IgnoreNullValues = true,
-            //    WriteIndented = true,
-            //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            //telegram.Dump();
 
-            //};
+            // Create or reference an existing table
+            string tablename = telegram.GetTablename(_config.TablenamePrefix);
 
-            //var json = JsonSerializer.Serialize(data,options);
-            //_logger.LogInformation($"json: {json}");
+            if (_table?.Name != tablename)
+                _table = await _storageTableHelper.GetTableAsync(tablename);
 
+            try
+            {
+                // Create the InsertOrReplace table operation
+                TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(telegram);
 
-            //try
-            //{
-            //    ItemResponse<Telegram> cosmosResponse = await _cosmosContainer.ReadItemAsync<Telegram>(data.Id, new PartitionKey(data.Key));
-            //    _logger.LogInformation("Item in database with id: {0} already exists\n", cosmosResponse.Value.Id);
-            //}
-            //catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            //{
-                ItemResponse<Telegram> cosmosResponse = await _cosmosContainer.CreateItemAsync<Telegram>(data, new PartitionKey(data.Key));
-                _logger.LogInformation("Created item in database with id: {0}\n", cosmosResponse.Value.Id);
+                // Execute the operation.
+                TableResult result = await _table.ExecuteAsync(insertOrMergeOperation);
+                if (result.HttpStatusCode == (int)HttpStatusCode.NoContent)
+                    Console.WriteLine($"Telegram {telegram.RowKey} stored in table {tablename}");
 
-            //}
+                return;
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                //throw;
+            }
         }
 
         private void SetSourceToFile(FileInfo[] files, ref int counter)
