@@ -23,7 +23,26 @@ namespace MeterMonitor.Reader
             _logger = logger;
             _config = config.Value;
 
-            serialPort = CreateSerialPortStream();
+            serialPort = CreateSerialPort();
+        }
+
+        public async Task<Telegram> ReadAsStreamAsync()
+        {
+            serialPort.Open();
+            using StreamReader streamReader = new StreamReader(serialPort.BaseStream);
+            return await GetStreamFromReaderAsync(streamReader);
+        }
+
+        private async Task<Telegram> GetStreamFromReaderAsync(StreamReader streamReader)
+        {
+            Parser parser = new Parser();
+
+            Telegram telegram = new Telegram();
+            await parser.ParseFromStreamReader(streamReader, (object sender, Telegram output) =>
+            {
+                telegram = output;
+            });
+            return telegram;
         }
 
         public async Task<string> ReadAsStringAsync()
@@ -32,13 +51,6 @@ namespace MeterMonitor.Reader
             using StreamReader streamReader = new StreamReader(serialPort.BaseStream);
             return await GetStringFromReaderAsync(streamReader);
 
-        }
-
-        public async Task<Telegram> ReadAsStreamAsync()
-        {
-            serialPort.Open();
-            using StreamReader streamReader = new StreamReader(serialPort.BaseStream);
-            return await GetStreamFromReaderAsync(streamReader);
         }
 
         private static async Task<string> GetStringFromReaderAsync(StreamReader streamReader)
@@ -55,20 +67,7 @@ namespace MeterMonitor.Reader
             return stringBuilder.ToString();
 
         }
-
-        private async Task<Telegram> GetStreamFromReaderAsync(StreamReader streamReader)
-        {
-            Parser parser = new Parser();
-
-            Telegram telegram = new Telegram();
-            await parser.ParseFromStreamReader(streamReader, (object sender, Telegram output) =>
-            {
-                telegram = output;
-            });
-            return telegram;
-        }
-
-        private SerialPort CreateSerialPortStream()
+        private SerialPort CreateSerialPort()
         {
             var serialSettings = _config.SerialSettings;
             string port = serialSettings.Port;

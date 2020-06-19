@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Cosmos" Version="4.0.0-preview3" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.5" />
