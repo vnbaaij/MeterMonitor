@@ -49,8 +49,10 @@ namespace MeterMonitor
 
                 _telegram = await _meterReader.ReadAsStreamAsync();
 
-                _logger.LogInformation($"Extracted data from {_meterReader.Source}\n{_telegram.MeterTimestamp}\nConsumption (low/high):\t{_telegram.PowerConsumptionTariff1}/{_telegram.PowerConsumptionTariff2}\nProduction (low/high):\t{_telegram.PowerProductionTariff1}/{_telegram.PowerProductionTariff2}\n");
-                _logger.LogInformation($"Calculated CRC: {_telegram.ComputeChecksum()}");
+                _logger.LogInformation("Extracted data from {source} - {timestamp}", _meterReader.Source, _telegram.MeterTimestamp);
+                _logger.LogInformation("Consumption (low/high):\t{tariff1}/{tariff2}", _telegram.PowerConsumptionTariff1, _telegram.PowerConsumptionTariff2);
+                _logger.LogInformation("Production (low/high): \t{tariff1}/{tariff2}", _telegram.PowerProductionTariff1, _telegram.PowerProductionTariff2);
+                _logger.LogDebug("Calculated CRC: {checksum}", _telegram.ComputeChecksum());
 
                 if (_telegram.ComputeChecksum() != _telegram.CRC)
                 {
@@ -96,13 +98,13 @@ namespace MeterMonitor
                 // Execute the operation.
                 TableResult result = await _table.ExecuteAsync(insertOrMergeOperation);
                 if (result.HttpStatusCode == (int)HttpStatusCode.NoContent)
-                    Console.WriteLine($"Telegram {_telegram.RowKey} stored in table {tablename}");
+                    _logger.LogInformation("Telegram {rowkey} stored in table {tablename}", _telegram.RowKey, tablename);
 
                 return;
             }
             catch (StorageException e)
             {
-                Console.WriteLine($"Error when saving telegram {_telegram.RowKey}: {e.Message}");
+                _logger.LogError("Error when saving telegram {rowkey}: {message}", _telegram.RowKey, e.Message);
             }
         }
 
