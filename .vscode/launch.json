@@ -5,7 +5,7 @@
             "name": "Pi=>Publish, Launch and Attach Debugger",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "RaspberryPublish",
+            "preLaunchTask": "Publish to Pi (debug)",
             "program": "~/.dotnet/dotnet",
             "args": ["/home/pi/Desktop/${workspaceFolderBasename}/${workspaceFolderBasename}.dll"],
             "cwd": "/home/pi/Desktop/${workspaceFolderBasename}",

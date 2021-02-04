@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "RaspberryPublish",
+            "label": "Publish to Pi (debug)",
             "command": "pwsh",
             "type": "shell",
             "problemMatcher": "$msCompile",
@@ -13,7 +13,26 @@
                 "&&",
                 "bash",
                 "-c",
-                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Debug/netcoreapp3.1/linux-arm/publish/ pi@raspberrypi:/home/pi/Desktop/${workspaceFolderBasename}"
+                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Debug/net5.0/linux-arm/publish/ pi@raspberrypi:/home/pi/Desktop/${workspaceFolderBasename}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Publish to Pi (release)",
+            "command": "pwsh",
+            "type": "shell",
+            "problemMatcher": "$msCompile",
+            "args": [
+                "-c",
+                "dotnet publish -r linux-arm -c Release",
+                "${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
+                "&&",
+                "bash",
+                "-c",
+                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Release/net5.0/linux-arm/publish/ pi@raspberrypi:/home/pi/Desktop/${workspaceFolderBasename}"
             ],
             "group": {
                 "kind": "build",

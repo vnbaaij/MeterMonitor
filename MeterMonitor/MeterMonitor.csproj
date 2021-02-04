@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <UserSecretsId>0ab73b77-3901-4e36-90d0-43634aa9db2d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="3.1.6" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.2" />
+    <PackageReference Include="Azure.Identity" Version="1.3.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="5.0.1" />
     <PackageReference Include="ObjectsComparer" Version="1.4.1" />
-    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
+    <PackageReference Include="System.IO.Ports" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
