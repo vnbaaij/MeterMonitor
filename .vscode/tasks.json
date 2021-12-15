@@ -7,13 +7,12 @@
             "type": "shell",
             "problemMatcher": "$msCompile",
             "args": [
-                "-c",
-                "dotnet publish -r linux-arm",
-                "${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
+                "-Command",
+                "dotnet publish -r linux-arm --self-contained ${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
                 "&&",
                 "bash",
                 "-c",
-                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Debug/net5.0/linux-arm/publish/ pi@raspberrypi4:/home/pi/Desktop/${workspaceFolderBasename}"
+                "'rsync -az --update --verbose $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Debug/net6.0/linux-arm/publish/ pi@raspberrypi4.bnet.local:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",
@@ -26,13 +25,12 @@
             "type": "shell",
             "problemMatcher": "$msCompile",
             "args": [
-                "-c",
-                "dotnet publish -r linux-arm -c Release",
-                "${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
+                "-Command",
+                "dotnet publish -r linux-arm -c Release --self-contained ${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
                 "&&",
                 "bash",
                 "-c",
-                "rsync -az --update --verbose $(wslpath '${workspaceFolder}')/${workspaceFolderBasename}/bin/Release/net5.0/linux-arm/publish/ pi@raspberrypi4:/home/pi/Desktop/${workspaceFolderBasename}"
+                "'rsync -az --update --verbose  $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Release/net6.0/linux-arm/publish/ pi@raspberrypi4.bnet.local:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",
