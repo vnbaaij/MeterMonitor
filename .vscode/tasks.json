@@ -12,7 +12,7 @@
                 "&&",
                 "bash",
                 "-c",
-                "'rsync -az --update --verbose $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Debug/net6.0/linux-arm/publish/ pi@raspberrypi4.bnet.local:/home/pi/Desktop/${workspaceFolderBasename}'"
+                "'rsync -az --update --verbose $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Debug/net6.0/linux-arm/publish/ pi@192.168.1.98:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",
@@ -30,7 +30,7 @@
                 "&&",
                 "bash",
                 "-c",
-                "'rsync -az --update --verbose  $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Release/net6.0/linux-arm/publish/ pi@raspberrypi4.bnet.local:/home/pi/Desktop/${workspaceFolderBasename}'"
+                "'rsync -az --update --verbose  $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Release/net6.0/linux-arm/publish/ pi@192.168.1.98:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",

@@ -16,7 +16,7 @@
                 "pipeCwd": "${workspaceFolder}",
                 "pipeProgram": "ssh",
                 "pipeArgs": [
-                    "pi@raspberrypi4.bnet.local"
+                    "pi@raspberrypi4"
                 ],
                 "debuggerPath": "~/.vsdbg/vsdbg"
             },
@@ -38,7 +38,7 @@
                 "pipeCwd": "${workspaceFolder}",
                 "pipeProgram": "ssh",
                 "pipeArgs": [
-                    "pi@raspberrypi4.bnet.local"
+                    "pi@raspberrypi4"
                 ],
                 "debuggerPath": "~/.vsdbg/vsdbg"
             },
