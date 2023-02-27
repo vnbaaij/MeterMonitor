@@ -9,6 +9,7 @@ using MeterMonitor.Configuration;
 using System;
 using Azure.Identity;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
+//using MeterMonitor.Helpers;
 
 namespace MeterMonitor
 {
@@ -45,6 +46,7 @@ namespace MeterMonitor
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<ConfigSettings>(hostContext.Configuration.GetSection("Configuration"));
+                    //services.AddSingleton<StorageHelper>();
                     services.AddTransient<IMeterReader, MeterReader>();
                     services.AddHostedService<MeterWorker>();
                 });

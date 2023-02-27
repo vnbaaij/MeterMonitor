@@ -13,7 +13,7 @@ namespace DSMRParser.Converters
             if (!string.IsNullOrWhiteSpace(stringValue))
             {
                 stringValue = stringValue[0..^1]; //remove 'W' or 'S'
-                return DateTime.ParseExact(stringValue, "yyMMddHHmmss", CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(stringValue, "yyMMddHHmmss", CultureInfo.InvariantCulture).ToUniversalTime();
             }
             else
             {

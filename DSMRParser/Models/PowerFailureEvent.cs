@@ -12,6 +12,7 @@ namespace DSMRParser.Models
         [JsonPropertyName("timestamp")]
         [TypeConverter(typeof(ObisTimestampConverter))]
         public DateTime Timestamp { get; set; }
+        
         [JsonPropertyName("duration")]
         [TypeConverter(typeof(ObisDurationConverter))]
         public int Duration { get; set; } = 0;

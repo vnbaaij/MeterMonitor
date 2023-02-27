@@ -12,7 +12,7 @@
                 "&&",
                 "bash",
                 "-c",
-                "'rsync -az --update --verbose $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Debug/net6.0/linux-arm/publish/ pi@raspberrypi4.local:/home/pi/Desktop/${workspaceFolderBasename}'"
+                "'rsync -az --update --verbose $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Debug/net7.0/linux-arm/publish/ pi@raspberrypi4.local:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",
@@ -26,11 +26,11 @@
             "problemMatcher": "$msCompile",
             "args": [
                 "-Command",
-                "dotnet publish -r linux-arm -c Release --self-contained ${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
+                "dotnet publish -r linux-arm --self-contained -c Release ${workspaceFolder}\\${workspaceFolderBasename}\\${workspaceFolderBasename}.csproj",
                 "&&",
                 "bash",
                 "-c",
-                "'rsync -az --update --verbose  $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Release/net6.0/linux-arm/publish/ pi@raspberrypi4.local:/home/pi/Desktop/${workspaceFolderBasename}'"
+                "'rsync -az --update --verbose  $(wslpath '\"'${workspaceFolder}'\"')/${workspaceFolderBasename}/bin/Release/net7.0/linux-arm/publish/ pi@raspberrypi4.local:/home/pi/Desktop/${workspaceFolderBasename}'"
             ],
             "group": {
                 "kind": "build",
