@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
 	<TargetFramework>net7.0</TargetFramework>
@@ -18,7 +18,7 @@
 	  <TreatAsUsed>true</TreatAsUsed>
 	</PackageReference>
 	<PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
-	<PackageReference Include="Azure.Identity" Version="1.8.2" />
+	<PackageReference Include="Azure.Identity" Version="1.10.2" />
 	<PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
